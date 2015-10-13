@@ -1,0 +1,9 @@
+*.suo
+*.user
+*.DotSettings*
+*.exe
+*.docx
+bin
+obj
+lib
+packages

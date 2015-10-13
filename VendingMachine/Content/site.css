@@ -1,0 +1,10 @@
+﻿
+
+.item-to-sale {
+    position: relative;
+    display: inline-block;
+    width: 150px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
