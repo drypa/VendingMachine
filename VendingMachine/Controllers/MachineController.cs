@@ -25,10 +25,10 @@ namespace VendingMachine.Controllers
             manager.Reset();
             List<ItemToSaleVM> items = new List<ItemToSaleVM>
             {
-                new ItemToSaleVM{Name = "Чай",Price = 13},
-                new ItemToSaleVM{Name = "Кофе",Price = 18},
-                new ItemToSaleVM{Name = "Кофе с молоком",Price = 21},
-                new ItemToSaleVM{Name = "Сок",Price = 35},
+                new ItemToSaleVM{Name = "Чай",Price = 13,AvailableCount = 10},
+                new ItemToSaleVM{Name = "Кофе",Price = 18,AvailableCount = 20},
+                new ItemToSaleVM{Name = "Кофе с молоком",Price = 21,AvailableCount = 20},
+                new ItemToSaleVM{Name = "Сок",Price = 35,AvailableCount = 15},
             };
             foreach (var item in items)
             {

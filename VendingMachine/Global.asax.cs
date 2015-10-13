@@ -17,8 +17,6 @@ namespace VendingMachine
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            //To allow use SQL Server Compact
-            AppDomain.CurrentDomain.SetData("SQLServerCompactEditionUnderWebHosting", true);
         }
     }
 }

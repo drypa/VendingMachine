@@ -10,7 +10,7 @@ namespace VendingMachine.Managers
     {
         public List<ItemToSaleVM> GetSaleList()
         {
-            return GetDataManager().GetSaleList().Select(x => new ItemToSaleVM { Name = x.Name, Price = x.Price }).ToList();
+            return GetDataManager().GetSaleList().Select(x => new ItemToSaleVM { Name = x.Name, Price = x.Price, AvailableCount = x.AvailableCount }).ToList();
         }
 
         private ISaleDataManager GetDataManager()
