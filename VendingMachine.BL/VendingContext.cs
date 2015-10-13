@@ -5,10 +5,6 @@ namespace VendingMachine.BL
 {
     public class VendingContext: DbContext
     {
-        public VendingContext()
-            : base("VendingMachine.DbConnection")
-        {
-        }
         public DbSet<ItemToSale> ItemsToSale { get; set; }
     }
 }
