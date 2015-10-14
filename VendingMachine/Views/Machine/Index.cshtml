@@ -17,11 +17,12 @@ else
                 <h2>@item.Name</h2>
 
                 <div>
-                    <label>Цена</label>@item.Price.ToString("C")
+                    <label>Цена</label>@item.Price р.
                 </div>
                 <div>
                     <label>Доступно</label>@item.AvailableCount шт.
                 </div>
+                <span ><a href="#" data-id='@item.Id'>купить</a></span>
             </div>
         }
     </div>

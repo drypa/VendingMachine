@@ -29,6 +29,8 @@ namespace VendingMachine.BL
             using (var context = new VendingContext())
             {
                 context.Database.ExecuteSqlCommand("TRUNCATE TABLE [wares]");
+                context.Database.ExecuteSqlCommand("TRUNCATE TABLE [bank]");
+                context.Database.ExecuteSqlCommand("TRUNCATE TABLE [money_cache]");
             }
         }
 
@@ -37,6 +39,42 @@ namespace VendingMachine.BL
             using (var context = new VendingContext())
             {
                 context.ItemsToSale.Add(item);
+                context.SaveChanges();
+            }
+        }
+
+        public void AddToCache(decimal coin, int count)
+        {
+            using (var context = new VendingContext())
+            {
+                var coins = context.MoneyСache.FirstOrDefault(x => x.Nominal == coin);
+                if (coins != null)
+                {
+                    coins.Count += count;
+                }
+                else
+                {
+                    context.MoneyСache.Add(new MoneyCache { Nominal = coin ,Count = count});
+                }
+                
+                context.SaveChanges();
+            }
+        }
+
+        public void AddToBank(decimal coin, int count)
+        {
+            using (var context = new VendingContext())
+            {
+                var coins = context.Bank.FirstOrDefault(x => x.Nominal == coin);
+                if (coins != null)
+                {
+                    coins.Count += count;
+                }
+                else
+                {
+                    context.Bank.Add(new Bank { Nominal = coin, Count = count });
+                }
+
                 context.SaveChanges();
             }
         }
