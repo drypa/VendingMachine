@@ -7,14 +7,14 @@ namespace VendingMachine.BL
 {
     public class SaleDataManager : ISaleDataManager
     {
-        #region workaroun to fix error "No Entity Framework provider found for the ADO.NET provider"
+        #region workaround to fix error "No Entity Framework provider found for the ADO.NET provider"
         private volatile Type _dependency;
 
         public SaleDataManager()
         {
             _dependency = typeof(System.Data.Entity.SqlServer.SqlProviderServices);
         }
-        #endregion workaroun to fix error "No Entity Framework provider found for the ADO.NET provider"
+        #endregion workaround to fix error "No Entity Framework provider found for the ADO.NET provider"
 
         public List<ItemToSale> GetSaleList()
         {
@@ -76,6 +76,14 @@ namespace VendingMachine.BL
                 }
 
                 context.SaveChanges();
+            }
+        }
+
+        public List<Bank> GetBankCoins()
+        {
+            using (var context = new VendingContext())
+            {
+                return context.Bank.ToList();
             }
         }
     }

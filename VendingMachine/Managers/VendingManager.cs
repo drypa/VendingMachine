@@ -13,9 +13,30 @@ namespace VendingMachine.Managers
             return GetDataManager().GetSaleList().Select(x => new ItemToSaleVM { Name = x.Name, Price = x.Price, AvailableCount = x.AvailableCount, Id = x.Id }).ToList();
         }
 
+        public VendingMachineVm GetModel()
+        {
+            return new VendingMachineVm
+            {
+                ItemsToSale = GetSaleList(),
+                Bank = GetBankCoins()
+            };
+        }
+
+        private Dictionary<decimal, int> GetBankCoins()
+        {
+            var coins = GetDataManager().GetBankCoins();
+            var result = new Dictionary<decimal, int>(coins.Count);
+            foreach (var coin in coins)
+            {
+                result.Add(coin.Nominal, coin.Count);
+            }
+            return result;
+        }
+
+        private ISaleDataManager _manager;
         private ISaleDataManager GetDataManager()
         {
-            return new SaleDataManager();
+            return _manager ?? (_manager = new SaleDataManager());
         }
 
         public void Reset()

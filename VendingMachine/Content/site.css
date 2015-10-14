@@ -1,6 +1,6 @@
 ﻿
 
-.item-to-sale {
+.item-to-sale, .bank {
     position: relative;
     display: inline-block;
     width: 150px;

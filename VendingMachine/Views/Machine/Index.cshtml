@@ -1,17 +1,17 @@
 ﻿@using VendingMachine.Models
-@model  List<ItemToSaleVM>
+@model  VendingMachineVm
 @{
     ViewBag.Title = "Vending Machine";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@if (Model.Count == 0)
+@if (Model.ItemsToSale.Count == 0)
 {
     <div>Аппарат пуст</div>
 }
 else
 {
     <div class="row">
-        @foreach (ItemToSaleVM item in Model)
+        @foreach (ItemToSaleVM item in Model.ItemsToSale)
         {
             <div class="item-to-sale">
                 <h2>@item.Name</h2>
@@ -23,6 +23,22 @@ else
                     <label>Доступно</label>@item.AvailableCount шт.
                 </div>
                 <span ><a href="#" data-id='@item.Id'>купить</a></span>
+            </div>
+        }
+    </div>
+    
+    <div class="row">
+        
+        @foreach (var pair in Model.Bank)
+        {
+            <div class="bank">
+                Монеты в наличии
+                <div>
+                    <label>Достоинство</label>@pair.Key р.
+                </div>
+                <div>
+                    <label>Количество</label>@pair.Value шт.
+                </div>
             </div>
         }
     </div>

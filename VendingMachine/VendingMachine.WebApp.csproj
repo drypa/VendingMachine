@@ -121,6 +121,7 @@
     <Compile Include="Managers\IVendingManager.cs" />
     <Compile Include="Managers\VendingManager.cs" />
     <Compile Include="Models\ItemToSaleVM.cs" />
+    <Compile Include="Models\VendingMachineVm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

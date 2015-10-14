@@ -9,7 +9,7 @@ namespace VendingMachine.Controllers
     {
         public ActionResult Index()
         {
-            var model = GetManager().GetSaleList();
+            var model = GetManager().GetModel();
             return View(model);
         }
 
@@ -30,10 +30,18 @@ namespace VendingMachine.Controllers
                 new ItemToSaleVM{Name = "Кофе с молоком",Price = 21,AvailableCount = 20},
                 new ItemToSaleVM{Name = "Сок",Price = 35,AvailableCount = 15},
             };
+
+
             foreach (var item in items)
             {
                 manager.Add(item);
             }
+            const int defaultCoinCount = 100;
+            foreach (var coin in new[]{1,2,5,10})
+            {
+                manager.AddMoneyToBank(coin, defaultCoinCount);
+            }
+
             return RedirectToAction("Index");
         }
 

@@ -10,5 +10,6 @@ namespace VendingMachine.BL
         void Add(ItemToSale item);
         void AddToCache(decimal coin, int count);
         void AddToBank(decimal coin, int count);
+        List<Bank> GetBankCoins();
     }
 }
