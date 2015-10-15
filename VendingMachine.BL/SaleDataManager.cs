@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using VendingMachine.BE;
 
@@ -143,7 +145,22 @@ namespace VendingMachine.BL
                 return false;
             }
 
+            using (var context = new VendingContext())
+            {
+                //DecreaseCache(context.MoneyСache, product.Price,context.Bank);
+            }
             return false;
+        }
+
+        private void DecreaseCache(DbSet<MoneyCache> moneyСache,decimal delta,DbSet<Bank> bank)
+        {
+            var ordered = moneyСache.OrderByDescending(x => x.Nominal);
+            foreach (var coin in ordered)
+            {
+                if(coin.Nominal > delta || coin.Count==0) continue;
+                coin.Count -= 1;
+                delta -= coin.Nominal;
+            }
         }
 
         #endregion UserWallet
