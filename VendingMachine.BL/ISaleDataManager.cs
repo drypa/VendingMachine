@@ -6,6 +6,7 @@ namespace VendingMachine.BL
     public interface ISaleDataManager
     {
         List<ItemToSale> GetProducts();
+        ItemToSale GetProduct(int productId);
         void Reset();
         void AddProduct(ItemToSale item);
         void AddToCache(decimal coin, int count);
@@ -14,5 +15,6 @@ namespace VendingMachine.BL
         List<MoneyCache> GetCacheCoins();
         List<UserWallet> GetUserCoins();
         void AddToUserWallet(decimal coin, int count);
+        bool Buy(ItemToSale product, out string errorMessage);
     }
 }

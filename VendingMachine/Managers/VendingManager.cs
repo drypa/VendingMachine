@@ -2,6 +2,7 @@
 using System.Linq;
 using VendingMachine.BE;
 using VendingMachine.BL;
+using VendingMachine.Helpers;
 using VendingMachine.Models;
 
 namespace VendingMachine.Managers
@@ -61,6 +62,23 @@ namespace VendingMachine.Managers
         {
             GetDataManager().AddProduct(new ItemToSale { Name = item.Name, Price = item.Price, AvailableCount = item.AvailableCount, Id = item.Id });
         }
+
+        public bool Buy(int productId,out string errorMessage)
+        {
+            var manager = GetDataManager();
+            var product = manager.GetProduct(productId);
+            if (product == null)
+            {
+                errorMessage = "Запрашиваемый продукт не найден";
+                return false;
+            }
+
+            bool result = manager.Buy(product, out errorMessage);
+
+            return result;
+        }
+
+
 
         public void AddMoneyToBank(decimal coin, int count)
         {

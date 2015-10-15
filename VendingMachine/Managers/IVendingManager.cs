@@ -9,5 +9,6 @@ namespace VendingMachine.Managers
         void AddMoneyToBank(decimal coin, int count);
         void AddMoneyToWallet(decimal coin, int count);
         void Add(ItemToSaleVM item);
+        bool Buy(int productId, out string errorMessage);
     }
 }

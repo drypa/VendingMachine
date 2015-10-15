@@ -30,7 +30,7 @@ namespace VendingMachine.Helpers
 
         private static string GetScriptPath(string controller, string file, string extention)
         {
-            return string.Format("~/Scripts/Pages/{0}/{1}.{2}", controller, file, extention);
+            return string.Format("/Scripts/Pages/{0}/{1}.{2}", controller, file, extention);
         }
     }
 }

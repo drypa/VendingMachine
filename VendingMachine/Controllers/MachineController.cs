@@ -55,6 +55,17 @@ namespace VendingMachine.Controllers
             }
             return RedirectToAction("Index");
         }
+        [HttpPost]
+        public JsonResult Buy(int productId)
+        {
+            string errorMessage;
+            var result = GetManager().Buy(productId, out errorMessage);
+            if (result)
+            {
+                return Json(new {status="ok"});
+            }
+            return Json(new { status = "error", message = errorMessage });
+        }
 
         private IVendingManager GetManager()
         {

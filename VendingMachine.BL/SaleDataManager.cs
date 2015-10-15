@@ -26,6 +26,14 @@ namespace VendingMachine.BL
             }
         }
 
+        public ItemToSale GetProduct(int productId)
+        {
+            using (var context = new VendingContext())
+            {
+                return context.ItemsToSale.FirstOrDefault(x => x.Id == productId);
+            }
+        }
+
         public void AddProduct(ItemToSale item)
         {
             using (var context = new VendingContext())
@@ -83,14 +91,18 @@ namespace VendingMachine.BL
             }
         }
 
-
-
         public List<MoneyCache> GetCacheCoins()
         {
             using (var context = new VendingContext())
             {
                 return context.MoneyСache.ToList();
             }
+        }
+
+        private bool EnoughMoneyToBuy(ItemToSale product)
+        {
+            var coins = GetCacheCoins();
+            return coins.Count != 0 && coins.Select(x => x.Count * x.Nominal).Aggregate((n, m) => n + m) >= product.Price;
         }
 
         #endregion cache
@@ -121,7 +133,22 @@ namespace VendingMachine.BL
                 context.SaveChanges();
             }
         }
+
+        public bool Buy(ItemToSale product, out string errorMessage)
+        {
+            errorMessage = null;
+            if (!EnoughMoneyToBuy(product))
+            {
+                errorMessage = "Недостаточно внесено денег для покупки";
+                return false;
+            }
+
+            return false;
+        }
+
         #endregion UserWallet
+
+
 
         public void Reset()
         {
