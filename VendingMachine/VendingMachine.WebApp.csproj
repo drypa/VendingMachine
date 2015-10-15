@@ -118,6 +118,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Managers\IVendingManager.cs" />
     <Compile Include="Managers\VendingManager.cs" />
     <Compile Include="Models\ItemToSaleVM.cs" />
@@ -146,6 +147,7 @@
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Content\site.css" />
+    <Content Include="Scripts\Pages\Machine\Index.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

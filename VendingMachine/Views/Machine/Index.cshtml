@@ -1,9 +1,14 @@
-﻿@using VendingMachine.Models
+﻿@using VendingMachine.Helpers
+@using VendingMachine.Models
 @model  VendingMachineVm
 @{
     ViewBag.Title = "Vending Machine";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section header{
+    @Html.IncludeJs()
+}
+
 @if (Model.ItemsToSale.Count == 0)
 {
     <div>Аппарат пуст</div>
@@ -22,24 +27,28 @@ else
                 <div>
                     <label>Доступно</label>@item.AvailableCount шт.
                 </div>
-                <span ><a href="#" data-id='@item.Id'>купить</a></span>
+                <span><a href="#" data-id='@item.Id'>купить</a></span>
             </div>
         }
     </div>
     
     <div class="row">
-        
-        @foreach (var pair in Model.Bank)
-        {
-            <div class="bank">
-                Монеты в наличии
+        <div class="bank">
+            @if (Model.Bank.Count == 0)
+            {
+                <h3>Нет монет на сдачу</h3>
+            }
+            @foreach (var pair in Model.Bank)
+            {
+
+                <h3>Монеты в наличии</h3>
                 <div>
                     <label>Достоинство</label>@pair.Key р.
                 </div>
                 <div>
                     <label>Количество</label>@pair.Value шт.
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
 }
