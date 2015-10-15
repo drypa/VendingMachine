@@ -8,6 +8,7 @@ namespace VendingMachine.BL
     public class SaleDataManager : ISaleDataManager
     {
         #region workaround to fix error "No Entity Framework provider found for the ADO.NET provider"
+        // ReSharper disable once NotAccessedField.Local
         private volatile Type _dependency;
 
         public SaleDataManager()
@@ -16,7 +17,8 @@ namespace VendingMachine.BL
         }
         #endregion workaround to fix error "No Entity Framework provider found for the ADO.NET provider"
 
-        public List<ItemToSale> GetSaleList()
+        #region products
+        public List<ItemToSale> GetProducts()
         {
             using (var context = new VendingContext())
             {
@@ -24,17 +26,7 @@ namespace VendingMachine.BL
             }
         }
 
-        public void Reset()
-        {
-            using (var context = new VendingContext())
-            {
-                context.Database.ExecuteSqlCommand("TRUNCATE TABLE [wares]");
-                context.Database.ExecuteSqlCommand("TRUNCATE TABLE [bank]");
-                context.Database.ExecuteSqlCommand("TRUNCATE TABLE [money_cache]");
-            }
-        }
-
-        public void Add(ItemToSale item)
+        public void AddProduct(ItemToSale item)
         {
             using (var context = new VendingContext())
             {
@@ -42,25 +34,9 @@ namespace VendingMachine.BL
                 context.SaveChanges();
             }
         }
+        #endregion products
 
-        public void AddToCache(decimal coin, int count)
-        {
-            using (var context = new VendingContext())
-            {
-                var coins = context.MoneyСache.FirstOrDefault(x => x.Nominal == coin);
-                if (coins != null)
-                {
-                    coins.Count += count;
-                }
-                else
-                {
-                    context.MoneyСache.Add(new MoneyCache { Nominal = coin ,Count = count});
-                }
-                
-                context.SaveChanges();
-            }
-        }
-
+        #region bank
         public void AddToBank(decimal coin, int count)
         {
             using (var context = new VendingContext())
@@ -86,5 +62,77 @@ namespace VendingMachine.BL
                 return context.Bank.ToList();
             }
         }
+        #endregion bank
+
+        #region cache
+        public void AddToCache(decimal coin, int count)
+        {
+            using (var context = new VendingContext())
+            {
+                var coins = context.MoneyСache.FirstOrDefault(x => x.Nominal == coin);
+                if (coins != null)
+                {
+                    coins.Count += count;
+                }
+                else
+                {
+                    context.MoneyСache.Add(new MoneyCache { Nominal = coin, Count = count });
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+
+
+        public List<MoneyCache> GetCacheCoins()
+        {
+            using (var context = new VendingContext())
+            {
+                return context.MoneyСache.ToList();
+            }
+        }
+
+        #endregion cache
+
+        #region UserWallet
+        public List<UserWallet> GetUserCoins()
+        {
+            using (var context = new VendingContext())
+            {
+                return context.UserWallet.ToList();
+            }
+        }
+
+        public void AddToUserWallet(decimal coin, int count)
+        {
+            using (var context = new VendingContext())
+            {
+                var coins = context.UserWallet.FirstOrDefault(x => x.Nominal == coin);
+                if (coins != null)
+                {
+                    coins.Count += count;
+                }
+                else
+                {
+                    context.UserWallet.Add(new UserWallet { Nominal = coin, Count = count });
+                }
+
+                context.SaveChanges();
+            }
+        }
+        #endregion UserWallet
+
+        public void Reset()
+        {
+            using (var context = new VendingContext())
+            {
+                context.Database.ExecuteSqlCommand("TRUNCATE TABLE [wares]");
+                context.Database.ExecuteSqlCommand("TRUNCATE TABLE [bank]");
+                context.Database.ExecuteSqlCommand("TRUNCATE TABLE [money_cache]");
+                context.Database.ExecuteSqlCommand("TRUNCATE TABLE [user_wallet]");
+            }
+        }
+       
     }
 }

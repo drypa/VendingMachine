@@ -119,6 +119,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HtmlHelpers.cs" />
+    <Compile Include="Helpers\MoneyHelper.cs" />
     <Compile Include="Managers\IVendingManager.cs" />
     <Compile Include="Managers\VendingManager.cs" />
     <Compile Include="Models\ItemToSaleVM.cs" />

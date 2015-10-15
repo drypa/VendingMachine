@@ -30,15 +30,17 @@ else
                 <span><a href="#" data-id='@item.Id'>купить</a></span>
             </div>
         }
-    </div>
-    
-    <div class="row">
-        <div class="bank">
-            @if (Model.Bank.Count == 0)
-            {
-                <h3>Нет монет на сдачу</h3>
-            }
-            @foreach (var pair in Model.Bank)
+    </div>   
+}
+<div class="row">
+    <div class="bank">
+        @if (Model.Bank.Count == 0)
+        {
+            <h3>Нет монет на сдачу</h3>
+        }
+        else
+        {
+            foreach (var pair in Model.Bank)
             {
 
                 <h3>Монеты в наличии</h3>
@@ -49,6 +51,55 @@ else
                     <label>Количество</label>@pair.Value шт.
                 </div>
             }
-        </div>
+        }
     </div>
-}
+</div>
+<div class="row">
+    <div class="bank">
+        @if (Model.Cache.Count == 0)
+        {
+            <h3>Денег ещё не внесено</h3>
+        }
+        else
+        {
+            foreach (var pair in Model.Cache)
+            {
+
+                <h3>Внесено монет</h3>
+                <div>
+                    <label>Достоинство</label>@pair.Key р.
+                </div>
+                <div>
+                    <label>Количество</label>@pair.Value шт.
+                </div>
+            }
+            <div>
+                <label>Итого</label>@Model.Cache.Summary() р.
+            </div>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="bank">
+        <h3>Кошелёк пользователя</h3>
+        @if (Model.Cache.Count == 0)
+        {
+            <span>пустой=(</span>
+        }
+        else
+        {
+            foreach (var pair in Model.Wallet)
+            {
+                <div>
+                    <label>Достоинство</label>@pair.Key р.
+                </div>
+                <div>
+                    <label>Количество</label>@pair.Value шт.
+                </div>
+            }
+            <div>
+                <label>Итого</label>@Model.Wallet.Summary() р.
+            </div>
+        }
+    </div>
+</div>

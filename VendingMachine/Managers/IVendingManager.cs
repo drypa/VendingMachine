@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using VendingMachine.Models;
+﻿using VendingMachine.Models;
 
 namespace VendingMachine.Managers
 {
     public interface IVendingManager
     {
-        List<ItemToSaleVM> GetSaleList();
         VendingMachineVm GetModel();
         void Reset();
+        void AddMoneyToBank(decimal coin, int count);
+        void AddMoneyToWallet(decimal coin, int count);
+        void Add(ItemToSaleVM item);
     }
 }

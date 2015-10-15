@@ -8,18 +8,31 @@ namespace VendingMachine.Managers
 {
     public class VendingManager : IVendingManager
     {
-        public List<ItemToSaleVM> GetSaleList()
-        {
-            return GetDataManager().GetSaleList().Select(x => new ItemToSaleVM { Name = x.Name, Price = x.Price, AvailableCount = x.AvailableCount, Id = x.Id }).ToList();
-        }
-
         public VendingMachineVm GetModel()
         {
             return new VendingMachineVm
             {
                 ItemsToSale = GetSaleList(),
-                Bank = GetBankCoins()
+                Bank = GetBankCoins(),
+                Cache = GetCacheCoins(),
+                Wallet = GetUserCoins()
             };
+        }
+
+        private Dictionary<decimal, int> GetUserCoins()
+        {
+            var coins = GetDataManager().GetUserCoins();
+            var result = new Dictionary<decimal, int>(coins.Count);
+            foreach (var coin in coins)
+            {
+                result.Add(coin.Nominal, coin.Count);
+            }
+            return result;
+        }
+
+        private List<ItemToSaleVM> GetSaleList()
+        {
+            return GetDataManager().GetProducts().Select(x => new ItemToSaleVM { Name = x.Name, Price = x.Price, AvailableCount = x.AvailableCount, Id = x.Id }).ToList();
         }
 
         private Dictionary<decimal, int> GetBankCoins()
@@ -46,7 +59,7 @@ namespace VendingMachine.Managers
 
         public void Add(ItemToSaleVM item)
         {
-            GetDataManager().Add(new ItemToSale { Name = item.Name, Price = item.Price, AvailableCount = item.AvailableCount, Id = item.Id });
+            GetDataManager().AddProduct(new ItemToSale { Name = item.Name, Price = item.Price, AvailableCount = item.AvailableCount, Id = item.Id });
         }
 
         public void AddMoneyToBank(decimal coin, int count)
@@ -56,6 +69,22 @@ namespace VendingMachine.Managers
         public void AddMoneyToCache(decimal coin, int count)
         {
             GetDataManager().AddToCache(coin, count);
+        }
+
+        public void AddMoneyToWallet(decimal coin, int count)
+        {
+            GetDataManager().AddToUserWallet(coin, count);
+        }
+
+        private Dictionary<decimal, int> GetCacheCoins()
+        {
+            var coins = GetDataManager().GetCacheCoins();
+            var result = new Dictionary<decimal, int>(coins.Count);
+            foreach (var coin in coins)
+            {
+                result.Add(coin.Nominal, coin.Count);
+            }
+            return result;
         }
     }
 }

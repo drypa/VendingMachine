@@ -6,5 +6,7 @@ namespace VendingMachine.Models
     {
         public List<ItemToSaleVM> ItemsToSale { get; set; }
         public Dictionary<decimal, int> Bank { get; set; }
+        public Dictionary<decimal, int> Cache { get; set; }
+        public Dictionary<decimal, int> Wallet { get; set; }
     }
 }

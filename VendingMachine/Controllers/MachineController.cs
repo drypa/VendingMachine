@@ -45,7 +45,18 @@ namespace VendingMachine.Controllers
             return RedirectToAction("Index");
         }
 
-        private VendingManager GetManager()
+        public ActionResult InitUser()
+        {
+            var manager = GetManager();
+            const int defaultCoinCount = 10;
+            foreach (var coin in new[] { 1, 2, 5, 10 })
+            {
+                manager.AddMoneyToWallet(coin, defaultCoinCount);
+            }
+            return RedirectToAction("Index");
+        }
+
+        private IVendingManager GetManager()
         {
             return new VendingManager();
         }
