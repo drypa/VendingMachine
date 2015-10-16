@@ -51,17 +51,20 @@ namespace VendingMachine.BL
         {
             using (var context = new VendingContext())
             {
-                var coins = context.Bank.FirstOrDefault(x => x.Nominal == coin);
-                if (coins != null)
-                {
-                    coins.Count += count;
-                }
-                else
-                {
-                    context.Bank.Add(new Bank { Nominal = coin, Count = count });
-                }
-
+                AddToBank(coin, count, context);
                 context.SaveChanges();
+            }
+        }
+        private void AddToBank(decimal coin, int count, VendingContext context)
+        {
+            var coins = context.Bank.FirstOrDefault(x => x.Nominal == coin);
+            if (coins != null)
+            {
+                coins.Count += count;
+            }
+            else
+            {
+                context.Bank.Add(new Bank { Nominal = coin, Count = count });
             }
         }
 
@@ -107,6 +110,56 @@ namespace VendingMachine.BL
             return coins.Count != 0 && coins.Select(x => x.Count * x.Nominal).Aggregate((n, m) => n + m) >= product.Price;
         }
 
+        public bool Buy(ItemToSale product, out string errorMessage)
+        {
+            errorMessage = null;
+            if (!EnoughMoneyToBuy(product))
+            {
+                errorMessage = "Недостаточно внесено денег для покупки";
+                return false;
+            }
+
+            using (var context = new VendingContext())
+            {
+                var moneyInCacheCount = context.MoneyСache.Select(x => x.Count * x.Nominal).Aggregate((arg1, arg2) => arg1 + arg2);
+                var needReturn = moneyInCacheCount - product.Price;
+                foreach (var coins in context.MoneyСache)
+                {
+                    AddToBank(coins.Nominal, coins.Count, context);
+                }
+                context.MoneyСache.RemoveRange(context.MoneyСache);
+
+                ReturnToCache(needReturn, context);
+
+                context.SaveChanges();
+            }
+            return false;
+        }
+
+        private void ReturnToCache(decimal needReturn, VendingContext context)
+        {
+            var ordered = context.MoneyСache.OrderByDescending(x => x.Nominal);
+            foreach (var coins in ordered)
+            {
+                if (coins.Nominal > needReturn || coins.Count == 0) continue;
+                coins.Count -= 1;
+                needReturn -= coins.Nominal;
+                if (needReturn <= 0) return;
+            }
+        }
+
+
+        private void DecreaseCache(DbSet<MoneyCache> moneyСache, decimal delta, DbSet<Bank> bank)
+        {
+            var ordered = moneyСache.OrderByDescending(x => x.Nominal);
+            foreach (var coin in ordered)
+            {
+                if (coin.Nominal > delta || coin.Count == 0) continue;
+                coin.Count -= 1;
+                delta -= coin.Nominal;
+            }
+        }
+
         #endregion cache
 
         #region UserWallet
@@ -114,7 +167,7 @@ namespace VendingMachine.BL
         {
             using (var context = new VendingContext())
             {
-                return context.UserWallet.ToList();
+                return context.UserWallet.Where(x => x.Count > 0).ToList();
             }
         }
 
@@ -135,34 +188,6 @@ namespace VendingMachine.BL
                 context.SaveChanges();
             }
         }
-
-        public bool Buy(ItemToSale product, out string errorMessage)
-        {
-            errorMessage = null;
-            if (!EnoughMoneyToBuy(product))
-            {
-                errorMessage = "Недостаточно внесено денег для покупки";
-                return false;
-            }
-
-            using (var context = new VendingContext())
-            {
-                //DecreaseCache(context.MoneyСache, product.Price,context.Bank);
-            }
-            return false;
-        }
-
-        private void DecreaseCache(DbSet<MoneyCache> moneyСache,decimal delta,DbSet<Bank> bank)
-        {
-            var ordered = moneyСache.OrderByDescending(x => x.Nominal);
-            foreach (var coin in ordered)
-            {
-                if(coin.Nominal > delta || coin.Count==0) continue;
-                coin.Count -= 1;
-                delta -= coin.Nominal;
-            }
-        }
-
         #endregion UserWallet
 
 
@@ -177,6 +202,6 @@ namespace VendingMachine.BL
                 context.Database.ExecuteSqlCommand("TRUNCATE TABLE [user_wallet]");
             }
         }
-       
+
     }
 }
