@@ -14,6 +14,9 @@
     </script>
     @Html.IncludeJs()
 }
+@Html.ActionLink("Наполнить автомат","Init")
+@Html.ActionLink("Пополнить кошелёк пользователя","InitUser")
+@Html.ActionLink("Опустошить всё","Reset")
 
 @if (Model.ItemsToSale.Count == 0)
 {
