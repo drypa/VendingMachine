@@ -2,7 +2,6 @@
 using System.Linq;
 using VendingMachine.BE;
 using VendingMachine.BL;
-using VendingMachine.Helpers;
 using VendingMachine.Models;
 
 namespace VendingMachine.Managers
@@ -81,6 +80,11 @@ namespace VendingMachine.Managers
         public void InsertCoin(decimal nominal)
         {
             GetDataManager().InsertCoin(nominal);
+        }
+
+        public void MoneyBack()
+        {
+            GetDataManager().MoneyBack();
         }
 
 

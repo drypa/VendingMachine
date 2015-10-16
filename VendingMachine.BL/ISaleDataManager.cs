@@ -17,5 +17,6 @@ namespace VendingMachine.BL
         void AddToUserWallet(decimal coin, int count);
         bool Buy(ItemToSale product, out string errorMessage);
         void InsertCoin(decimal nominal);
+        void MoneyBack();
     }
 }

@@ -11,5 +11,6 @@ namespace VendingMachine.Managers
         void Add(ItemToSaleVM item);
         bool Buy(int productId, out string errorMessage);
         void InsertCoin(decimal nominal);
+        void MoneyBack();
     }
 }

@@ -10,6 +10,7 @@
         var VM = VM || {};
         VM.BuyUrl = VM.BuyUrl || '@Url.Action("Buy")';
         VM.InsertCoin = VM.InsertCoin || '@Url.Action("Insert")';
+        VM.MoneyBack = VM.MoneyBack || '@Url.Action("MoneyBack")';
     </script>
     @Html.IncludeJs()
 }
@@ -81,6 +82,9 @@ else
             }
             <div>
                 <label>Итого</label><i>@Model.Cache.Summary() р.</i>
+            </div>
+            <div>
+                <a href="#" id="moneyBack">Вернуть</a>
             </div>
         }
     </div>

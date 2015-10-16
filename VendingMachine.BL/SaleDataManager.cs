@@ -174,18 +174,22 @@ namespace VendingMachine.BL
         {
             using (var context = new VendingContext())
             {
-                var coins = context.UserWallet.FirstOrDefault(x => x.Nominal == coin);
-                if (coins != null)
-                {
-                    coins.Count += count;
-                }
-                else
-                {
-                    context.UserWallet.Add(new UserWallet { Nominal = coin, Count = count });
-                }
-
+                AddToUserWallet(coin, count, context);
                 context.SaveChanges();
             }
+        }
+        private void AddToUserWallet(decimal coin, int count, VendingContext context)
+        {
+            var coins = context.UserWallet.FirstOrDefault(x => x.Nominal == coin);
+            if (coins != null)
+            {
+                coins.Count += count;
+            }
+            else
+            {
+                context.UserWallet.Add(new UserWallet { Nominal = coin, Count = count });
+            }
+
         }
 
         public void InsertCoin(decimal nominal)
@@ -202,6 +206,23 @@ namespace VendingMachine.BL
 
             }
         }
+
+        public void MoneyBack()
+        {
+            using (var context = new VendingContext())
+            {
+                foreach (var coins in context.MoneyCache)
+                {
+                    AddToUserWallet(coins.Nominal, coins.Count, context);
+                }
+                foreach (MoneyCache cache in context.MoneyCache)
+                {
+                    cache.Count = 0;
+                }
+                context.SaveChanges();
+            }
+        }
+
         #endregion UserWallet
 
 

@@ -78,5 +78,12 @@ namespace VendingMachine.Controllers
         {
             return new VendingManager();
         }
+
+        [HttpPost]
+        public JsonResult MoneyBack()
+        {
+            GetManager().MoneyBack();
+            return Json(new { status = "ok" });
+        }
     }
 }
