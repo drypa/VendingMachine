@@ -20,7 +20,7 @@
 }
 else
 {
-    <div class="row">
+    <div class="row table-bordered">
         @foreach (ItemToSaleVM item in Model.ItemsToSale)
         {
             <div class="item-to-sale">
@@ -52,50 +52,40 @@ else
         }
         else
         {
+            <h3>Монеты в наличии</h3>
             foreach (var pair in Model.Bank)
             {
-
-                <h3>Монеты в наличии</h3>
                 <div>
-                    <label>Достоинство</label>@pair.Key р.
-                </div>
-                <div>
-                    <label>Количество</label>@pair.Value шт.
+                    <label>@pair.Key р.</label><i>@pair.Value шт.</i>
                 </div>
             }
-             <div>
-                <label>Итого</label>@Model.Bank.Summary() р.
+            <div>
+                <label>Итого</label><i>@Model.Bank.Summary() р.</i>
             </div>
         }
     </div>
-</div>
-<div class="row">
-    <div class="bank">
+
+    <div class="cache">
         @if (Model.Cache.Count == 0)
         {
             <h3>Денег ещё не внесено</h3>
         }
         else
         {
+            <h3>Внесено монет</h3>
             foreach (var pair in Model.Cache)
             {
-
-                <h3>Внесено монет</h3>
                 <div>
-                    <label>Достоинство</label>@pair.Key р.
-                </div>
-                <div>
-                    <label>Количество</label>@pair.Value шт.
+                    <label>@pair.Key р.</label><i>@pair.Value шт.</i>
                 </div>
             }
             <div>
-                <label>Итого</label>@Model.Cache.Summary() р.
+                <label>Итого</label><i>@Model.Cache.Summary() р.</i>
             </div>
         }
     </div>
-</div>
-<div class="row">
-    <div class="bank">
+
+    <div class="wallet">
         <h3>Кошелёк пользователя</h3>
         @if (Model.Wallet.Count == 0)
         {
@@ -105,16 +95,13 @@ else
         {
             foreach (var pair in Model.Wallet)
             {
-                <div>
-                    <label>Достоинство</label>@pair.Key р.
-                </div>
-                <div>
-                    <label>Количество</label>@pair.Value шт.
-                </div>
-                <a href="#" data-nominal="@pair.Key">внести</a>
+            <div>
+                <label>@pair.Key р.</label><i>@pair.Value шт.</i>
+            </div>
+            <a href="#" data-nominal="@pair.Key">внести</a>
             }
             <div>
-                <label>Итого</label>@Model.Wallet.Summary() р.
+                <label>Итого</label><i>@Model.Wallet.Summary() р.</i>
             </div>
         }
     </div>

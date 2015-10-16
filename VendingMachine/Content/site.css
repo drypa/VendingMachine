@@ -1,10 +1,14 @@
-﻿
+﻿h2 {
+    text-align: center;
+}
 
-.item-to-sale, .bank {
+.item-to-sale, .bank, .wallet,.cache {
     position: relative;
     display: inline-block;
-    width: 150px;
+    width: 250px;
     margin: 5px;
+    padding: 5px;
     border: 1px solid #ccc;
+    -ms-border-radius: 8px;
     border-radius: 8px;
 }
