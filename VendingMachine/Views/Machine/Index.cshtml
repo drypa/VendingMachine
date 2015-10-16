@@ -6,6 +6,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section header{
+    <script type="text/javascript">
+        var VM = VM || {};
+        VM.BuyUrl = VM.BuyUrl || '@Url.Action("Buy")';
+        VM.InsertCoin = VM.InsertCoin || '@Url.Action("Insert")';
+    </script>
     @Html.IncludeJs()
 }
 
@@ -27,7 +32,14 @@ else
                 <div>
                     <label>Доступно</label>@item.AvailableCount шт.
                 </div>
-                <span><a href="#" data-id='@item.Id'>купить</a></span>
+                @if (@item.AvailableCount > 0)
+                {
+                    <span><a href="#" data-id='@item.Id'>купить</a></span>
+                }
+                else
+                {
+                    <span>закончился</span>
+                }
             </div>
         }
     </div>   
