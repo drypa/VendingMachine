@@ -55,6 +55,7 @@ namespace VendingMachine.Controllers
             }
             return RedirectToAction("Index");
         }
+
         [HttpPost]
         public JsonResult Buy(int productId)
         {
@@ -65,6 +66,12 @@ namespace VendingMachine.Controllers
                 return Json(new {status="ok"});
             }
             return Json(new { status = "error", message = errorMessage });
+        }
+        [HttpPost]
+        public JsonResult Insert(decimal nominal)
+        {
+            GetManager().InsertCoin(nominal);
+            return Json(new { status = "ok" });
         }
 
         private IVendingManager GetManager()

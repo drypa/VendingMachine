@@ -16,5 +16,6 @@ namespace VendingMachine.BL
         List<UserWallet> GetUserCoins();
         void AddToUserWallet(decimal coin, int count);
         bool Buy(ItemToSale product, out string errorMessage);
+        void InsertCoin(decimal nominal);
     }
 }

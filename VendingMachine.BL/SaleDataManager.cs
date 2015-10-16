@@ -82,17 +82,20 @@ namespace VendingMachine.BL
         {
             using (var context = new VendingContext())
             {
-                var coins = context.MoneyСache.FirstOrDefault(x => x.Nominal == coin);
-                if (coins != null)
-                {
-                    coins.Count += count;
-                }
-                else
-                {
-                    context.MoneyСache.Add(new MoneyCache { Nominal = coin, Count = count });
-                }
-
+                AddToCache(coin, count, context);
                 context.SaveChanges();
+            }
+        }
+        private void AddToCache(decimal coin, int count,VendingContext context)
+        {
+            var coins = context.MoneyСache.FirstOrDefault(x => x.Nominal == coin);
+            if (coins != null)
+            {
+                coins.Count += count;
+            }
+            else
+            {
+                context.MoneyСache.Add(new MoneyCache { Nominal = coin, Count = count });
             }
         }
 
@@ -121,7 +124,8 @@ namespace VendingMachine.BL
 
             using (var context = new VendingContext())
             {
-                var moneyInCacheCount = context.MoneyСache.Select(x => x.Count * x.Nominal).Aggregate((arg1, arg2) => arg1 + arg2);
+                var coinsInserted = context.MoneyСache.Select(x => x.Count*x.Nominal).ToList();
+                var moneyInCacheCount = coinsInserted.Aggregate((arg1, arg2) => arg1 + arg2);
                 var needReturn = moneyInCacheCount - product.Price;
                 foreach (var coins in context.MoneyСache)
                 {
@@ -130,7 +134,8 @@ namespace VendingMachine.BL
                 context.MoneyСache.RemoveRange(context.MoneyСache);
 
                 ReturnToCache(needReturn, context);
-
+                var productToBuy = context.ItemsToSale.First(x => x.Id == product.Id);
+                productToBuy.AvailableCount -= 1;
                 context.SaveChanges();
             }
             return false;
@@ -141,9 +146,11 @@ namespace VendingMachine.BL
             var ordered = context.MoneyСache.OrderByDescending(x => x.Nominal);
             foreach (var coins in ordered)
             {
-                if (coins.Nominal > needReturn || coins.Count == 0) continue;
-                coins.Count -= 1;
-                needReturn -= coins.Nominal;
+                while (coins.Nominal <= needReturn && coins.Count != 0)
+                {
+                    coins.Count -= 1;
+                    needReturn -= coins.Nominal;
+                }
                 if (needReturn <= 0) return;
             }
         }
@@ -186,6 +193,21 @@ namespace VendingMachine.BL
                 }
 
                 context.SaveChanges();
+            }
+        }
+
+        public void InsertCoin(decimal nominal)
+        {
+            using (var context = new VendingContext())
+            {
+                var coins =context.UserWallet.FirstOrDefault(x => x.Nominal == nominal);
+                if (coins != null && coins.Count > 1)
+                {
+                    coins.Count -= 1;
+                    AddToCache(nominal, 1);
+                    context.SaveChanges();
+                }
+               
             }
         }
         #endregion UserWallet

@@ -67,7 +67,7 @@ namespace VendingMachine.Managers
         {
             var manager = GetDataManager();
             var product = manager.GetProduct(productId);
-            if (product == null)
+            if (product == null || product.AvailableCount<=0)
             {
                 errorMessage = "Запрашиваемый продукт не найден";
                 return false;
@@ -78,6 +78,10 @@ namespace VendingMachine.Managers
             return result;
         }
 
+        public void InsertCoin(decimal nominal)
+        {
+            GetDataManager().InsertCoin(nominal);
+        }
 
 
         public void AddMoneyToBank(decimal coin, int count)

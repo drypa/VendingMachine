@@ -10,5 +10,6 @@ namespace VendingMachine.Managers
         void AddMoneyToWallet(decimal coin, int count);
         void Add(ItemToSaleVM item);
         bool Buy(int productId, out string errorMessage);
+        void InsertCoin(decimal nominal);
     }
 }
